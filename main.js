@@ -1,4 +1,4 @@
-const API = "http://localhost:8000/Post";
+const API = "http://localhost:8001/post";
 
 //? переменные для профиля
 let nickName = document.querySelector(".nickName");
@@ -15,7 +15,24 @@ let comment = document.querySelector("#comments");
 let btnSend = document.querySelector(".btn_send");
 //? для карточки
 let postList = document.querySelector(".post_list");
+// ?twit
+let twit = document.querySelector(".twit_count");
 
+follow.addEventListener("click", () => {
+  follow.style.backgroundColor = "#30b4d8";
+});
+function twitCount() {
+  fetch(API)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      let countTwit = document.createElement("div");
+      countTwit.innerHTML = `<p>${data.length} публикаций</p>`;
+      twit.append(countTwit);
+    });
+  render();
+}
+twitCount();
 btnSend.addEventListener("click", async function () {
   let post = {
     region: region.value,
@@ -47,9 +64,9 @@ btnSend.addEventListener("click", async function () {
 });
 
 async function render() {
-  let res = await fetch(`${API}?q=${searchVal}&_page=${currentPage}&_limit=1`);
+  let res = await fetch(`${API}`);
   let twit = await res.json();
-  pagination();
+
   postList.innerHTML = "";
   twit.forEach((item) => {
     let newItem = document.createElement("div");
@@ -93,7 +110,6 @@ async function deletePost(id) {
   } catch (error) {
     console.log(error);
   }
-
   render();
 }
 

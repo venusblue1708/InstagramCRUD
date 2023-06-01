@@ -1,3 +1,25 @@
 {
-  "Post": []
+  "post": [
+    {
+      "region": "Moscow",
+      "imageUrl": "https://i.pinimg.com/236x/57/01/15/5701154c4e0fdc28d7a948ee7906585a.jpg",
+      "countLike": "11111",
+      "comment": "2141",
+      "id": 1
+    },
+    {
+      "region": "Rome,Italy",
+      "imageUrl": "https://i.pinimg.com/236x/47/0a/cd/470acde4a0ecba77d56c5adbd3e73860.jpg",
+      "countLike": "214",
+      "comment": "24",
+      "id": 2
+    },
+    {
+      "region": "Греция",
+      "imageUrl": "https://i.pinimg.com/236x/4e/aa/9b/4eaa9b03322df9a7f289369940ac2bae.jpg",
+      "countLike": "2109",
+      "comment": "126",
+      "id": 8
+    }
+  ]
 }
