@@ -85,3 +85,70 @@ async function render() {
   });
 }
 render();
+
+// ! delete
+async function deletePost(id) {
+  try {
+    await fetch(`${API}/${id}`, { method: "DELETE" });
+  } catch (error) {
+    console.log(error);
+  }
+
+  render();
+}
+
+//? for edit
+let regionEdit = document.querySelector("#regionEdit");
+let imageUrlEdit = document.querySelector("#image_url_edit");
+let LikesEdit = document.querySelector("#likesEdit");
+let commentsEdit = document.querySelector("#comments_edit");
+let btnEdit = document.querySelector(".btnEdit");
+let modalEdit = document.querySelector("#exampleModalforEdit");
+
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("btn-edit")) {
+    let id = e.target.id;
+    fetch(`${API}/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        regionEdit.value = data.region;
+        imageUrlEdit.value = data.imageUrl;
+        commentsEdit.value = data.comment;
+        LikesEdit.value = data.countLike;
+
+        btnEdit.id = data.id;
+      });
+  }
+});
+
+btnEdit.addEventListener("click", function () {
+  let id = this.id;
+  // console.log(id);
+  region = regionEdit.value;
+  imageUrl = imageUrlEdit.value;
+  comment = commentsEdit.value;
+  countLike = LikesEdit.value;
+  if (!region || !imageUrl || !comment || !countLike) {
+    alert("заполните все поля");
+    return;
+  }
+
+  let editedPost = {
+    region,
+    imageUrl,
+    countLike,
+    comment,
+  };
+  saveEdit(editedPost, id);
+});
+
+function saveEdit(editedPost, id) {
+  fetch(`${API}/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    body: JSON.stringify(editedPost),
+  }).then(() => render());
+  let modal = bootstrap.Modal.getInstance(modalEdit);
+  modal.hide();
+}
