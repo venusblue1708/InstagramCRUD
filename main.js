@@ -1,4 +1,4 @@
-const API = "http://localhost:8001/post";
+const API = "http://localhost:8000/Post";
 
 //? переменные для профиля
 let nickName = document.querySelector(".nickName");
@@ -6,7 +6,6 @@ let imgProf = document.querySelector(".imgProf");
 let addPost = document.querySelector(".add_post");
 let modal = document.querySelector(".field");
 let follow = document.querySelector(".follow");
-
 //? переменные для инпутов
 let region = document.querySelector("#region");
 let imageUrl = document.querySelector("#image_url");
@@ -15,6 +14,15 @@ let comment = document.querySelector("#comments");
 let btnSend = document.querySelector(".btn_send");
 //? для карточки
 let postList = document.querySelector(".post_list");
+// ?pagination
+let paginationList = document.querySelector(".pagination-list");
+let prev = document.querySelector(".prev");
+let next = document.querySelector(".next");
+let currentPage = 1;
+let pageTotalCount = 1;
+// ? search
+let searchInp = document.querySelector("#search");
+let searchVal = "";
 // ?twit
 let twit = document.querySelector(".twit_count");
 
@@ -25,7 +33,7 @@ function twitCount() {
   fetch(API)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       let countTwit = document.createElement("div");
       countTwit.innerHTML = `<p>${data.length} публикаций</p>`;
       twit.append(countTwit);
@@ -33,6 +41,7 @@ function twitCount() {
   render();
 }
 twitCount();
+
 btnSend.addEventListener("click", async function () {
   let post = {
     region: region.value,
@@ -64,9 +73,9 @@ btnSend.addEventListener("click", async function () {
 });
 
 async function render() {
-  let res = await fetch(`${API}`);
+  let res = await fetch(`${API}?q=${searchVal}&_page=${currentPage}&_limit=1`);
   let twit = await res.json();
-
+  pagination();
   postList.innerHTML = "";
   twit.forEach((item) => {
     let newItem = document.createElement("div");
@@ -112,7 +121,6 @@ async function deletePost(id) {
   }
   render();
 }
-
 //? for edit
 let regionEdit = document.querySelector("#regionEdit");
 let imageUrlEdit = document.querySelector("#image_url_edit");
@@ -168,3 +176,69 @@ function saveEdit(editedPost, id) {
   let modal = bootstrap.Modal.getInstance(modalEdit);
   modal.hide();
 }
+// ? pagination
+
+function pagination() {
+  fetch(`${API}?q=${searchVal}`)
+    .then((res) => res.json())
+    .then((data) => {
+      pageTotalCount = Math.ceil(data.length / 1);
+      paginationList.innerHTML = "";
+      for (let i = 1; i <= pageTotalCount; i++) {
+        if (currentPage == i) {
+          let page1 = document.createElement("li");
+          page1.innerHTML = `<li class="page-item active"><a class="page-link page_number" href="#">${i}</a></li>`;
+          paginationList.append(page1);
+        } else {
+          let page1 = document.createElement("li");
+          page1.innerHTML = `<li class="page-item"><a class="page-link page_number" href="#">${i}</a></li>`;
+          paginationList.append(page1);
+        }
+      }
+      if (currentPage == 1) {
+        prev.classList.add("disabled");
+      } else {
+        prev.classList.remove("disabled");
+      }
+
+      if (currentPage == pageTotalCount) {
+        next.classList.add("disabled");
+      } else {
+        next.classList.remove("disabled");
+      }
+    });
+}
+
+prev.addEventListener("click", () => {
+  if (currentPage <= 1) {
+    return;
+  }
+  currentPage--;
+  render();
+});
+
+next.addEventListener("click", () => {
+  if (currentPage >= pageTotalCount) {
+    return;
+  }
+  currentPage++;
+  render();
+});
+
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("page_number")) {
+    currentPage = e.target.innerText;
+    render();
+  }
+});
+
+searchInp.addEventListener("input", () => {
+  searchVal = searchInp.value;
+  render();
+});
+
+let message = document.querySelector(".messange");
+message.addEventListener("click", () => {
+  let mes = prompt("your message for us");
+  console.log(mes);
+});
