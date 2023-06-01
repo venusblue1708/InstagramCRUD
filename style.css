@@ -62,3 +62,19 @@ button:hover {
   background-color: #90a955;
   transition: 0.3s;
 }
+/* content */
+.card-img {
+  width: 56px;
+  border-radius: 50%;
+  padding: 7px;
+}
+.textPost {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+}
+.post_list {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
