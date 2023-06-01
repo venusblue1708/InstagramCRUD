@@ -29,6 +29,19 @@ body {
   padding: 10px;
 }
 
+.wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  max-width: 960px;
+  width: 100%;
+  margin: auto;
+  padding: 1rem;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
 /* input modal */
 span {
   margin-top: 4px;
