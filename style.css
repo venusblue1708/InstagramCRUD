@@ -3,3 +3,8 @@ body {
   margin: 0;
   background-color: #fff;
 }
+/* navbar */
+.navbar {
+  background-color: #8cb369;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
